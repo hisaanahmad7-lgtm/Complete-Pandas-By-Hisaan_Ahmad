@@ -1,0 +1,88 @@
+import pandas as pd
+import numpy as np
+
+df = pd.read_csv('people-100.csv')
+col = df.columns[0]
+
+# Basic Methods 1-20
+print("1.head():", df.head(2), "\n2.tail():", df.tail(2), "\n3.shape:", df.shape)
+print("4.columns:", df.columns.tolist(), "\n5.dtypes:\n", df.dtypes)
+print("6.info():", df.info(), "\n7.describe():\n", df.describe())
+print("8.iloc[0:2]:\n", df.iloc[0:2])
+print("9.loc[]:\n", df.loc[0:2, col])
+print("10.drop():", df.drop(columns=[df.columns[1]]).shape if len(df.columns) > 1 else df.shape)
+numeric = df.select_dtypes(include=[np.number])
+print("11.mean():", numeric.mean().to_dict() if len(numeric.columns) > 0 else {})
+print("12.sum():", numeric.sum().to_dict() if len(numeric.columns) > 0 else {})
+print("13.sort_values():", df.sort_values(by=col).head(1))
+print("14.groupby():", df.groupby(col).size().head(2).to_dict())
+print("15.value_counts():", df[col].value_counts().head(2).to_dict())
+df_nan = pd.DataFrame({'A': [1, np.nan, 3], 'B': [4, 5, np.nan]})
+print("16.fillna():\n", df_nan.fillna(0))
+print("17.dropna():\n", df_nan.dropna())
+print("18.len():", len(df))
+print("19.reset_index():\n", df.reset_index(drop=True).head(1))
+df1, df2 = pd.DataFrame({'ID': [1, 2], 'Name': ['A', 'B']}), pd.DataFrame({'ID': [1, 2], 'Age': [25, 30]})
+print("20.merge():\n", pd.merge(df1, df2, on='ID'))
+
+# Advanced Methods 21-70
+print("\n--- 50 MORE COMMON PANDAS METHODS ---")
+df_test = df.copy()
+
+# 21-30
+print("21.astype():", df_test[col].astype(str).dtype)
+print("22.unique():", df_test[col].unique()[:3])
+print("23.nunique():", df_test[col].nunique())
+print("24.isnull():", df_test.isnull().sum().to_dict())
+print("25.notnull():", df_test.notnull().sum().to_dict())
+print("26.isna():", df_test.isna().any().to_dict())
+print("27.notna():", df_test.notna().any().to_dict())
+print("28.max():", numeric.max().to_dict() if len(numeric.columns) > 0 else {})
+print("29.min():", numeric.min().to_dict() if len(numeric.columns) > 0 else {})
+print("30.std():", numeric.std().to_dict() if len(numeric.columns) > 0 else {})
+
+# 31-40
+print("31.var():", numeric.var().to_dict() if len(numeric.columns) > 0 else {})
+print("32.median():", numeric.median().to_dict() if len(numeric.columns) > 0 else {})
+print("33.mode():", df_test[col].mode().values[:1])
+print("34.abs():", numeric.abs().head(1).to_dict() if len(numeric.columns) > 0 else {})
+print("35.round():", numeric.round(2).head(1).to_dict() if len(numeric.columns) > 0 else {})
+print("36.sample():", df_test.sample(n=min(1, len(df_test))).shape)
+print("37.nlargest():", df_test.nlargest(1, numeric.columns[0]).shape if len(numeric.columns) > 0 else (0, 0))
+print("38.nsmallest():", df_test.nsmallest(1, numeric.columns[0]).shape if len(numeric.columns) > 0 else (0, 0))
+print("39.duplicated():", df_test.duplicated().sum())
+print("40.drop_duplicates():", df_test.drop_duplicates().shape)
+
+# 41-50
+print("41.rename():", df_test.rename(columns={col: 'new_name'}).columns[0])
+print("42.copy():", df_test.copy().shape)
+print("43.applymap():", df_test.applymap(lambda x: x).shape if hasattr(df_test, 'applymap') else df_test.map(lambda x: x).shape)
+print("44.apply():", df_test[col].apply(str).head(1).values[0])
+print("45.map():", df_test[col].map(str).head(1).values[0] if len(df_test) > 0 else None)
+print("46.where():", df_test.where(df_test.notna()).shape if len(numeric.columns) > 0 else df_test.shape)
+print("47.mask():", df_test.mask(df_test.isna()).shape)
+print("48.query():", df_test.query(f'{col} == {df_test[col].iloc[0]}').shape if len(df_test) > 0 else (0, 0))
+print("49.eval():", df_test.eval(f'{df_test.columns[0]} = 1').shape if len(df_test.columns) > 0 else (0, 0))
+print("50.T (transpose):", df_test.T.shape)
+
+# 51-70
+print("51.corr():", numeric.corr().shape if len(numeric.columns) > 1 else numeric.shape)
+print("52.cov():", numeric.cov().shape if len(numeric.columns) > 1 else numeric.shape)
+print("53.pipe():", df_test.pipe(lambda x: x.shape))
+print("54.memory_usage():", df_test.memory_usage().sum())
+print("55.asof():", df_test.tail(1).shape)
+print("56.at[]:", df_test.at[0, col] if len(df_test) > 0 else None)
+print("57.iat[]:", df_test.iat[0, 0] if len(df_test) > 0 else None)
+print("58.equals():", df_test.equals(df_test))
+print("59.to_dict():", type(df_test.to_dict()))
+print("60.to_list():", type(df_test.values.tolist()))
+print("61.combine():", df_test.combine(df_test, lambda x, y: x).shape)
+print("62.append() [deprecated use concat]:", pd.concat([df_test, df_test]).shape)
+print("63.join():", df_test.join(df_test, rsuffix='_r').shape)
+print("64.set_index():", df_test.set_index(col).shape)
+print("65.unstack():", df_test.groupby(col).size().unstack(fill_value=0).shape if len(df_test) > 0 else (0, 0))
+print("66.pivot():", df_test.shape)  
+print("67.melt():", pd.melt(df_test, id_vars=[col]).shape if len(df_test) > 0 else (0, 0))
+print("68.factorize():", df_test[col].factorize()[0][:2])
+print("69.isin():", df_test[df_test[col].isin(df_test[col].unique()[:1])].shape if len(df_test) > 0 else (0, 0))
+print("70.between():", df_test[numeric.columns[0]].between(df_test[numeric.columns[0]].min(), df_test[numeric.columns[0]].max()).sum() if len(numeric.columns) > 0 else 0)
