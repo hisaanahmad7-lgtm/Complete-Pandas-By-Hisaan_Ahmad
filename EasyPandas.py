@@ -57,6 +57,43 @@ print(numeric.mean().to_dict())
 
 
 #Create a new column name as age
-df['Age'] = np.random.randint(18, 66, size=len(df))
+# df['Age'] = np.random.randint(18, 66, size=len(df))
 
-print(product['Age'].value_counts().to_dict())
+# print(product['Age'].value_counts().to_dict())
+
+
+mydropna = people.dropna()
+print(mydropna.head(5))
+
+df_filled = df.fillna(0)
+print(df_filled.head(5))
+
+
+
+
+data = {
+    'Team': ['A', 'A', 'B', 'B', 'C', 'C'],
+    'Player': ['Ali', 'Ahmed', 'Bilal', 'Zain', 'Hamza', 'Umer'],
+    'Points': [85, 90, 78, 88, 92, 75]
+}
+df = pd.DataFrame(data)
+print(df.groupby('Team')['Points'].mean().head(2))
+
+
+# Age column ke numbers ko text (string) mein badalna
+ww1 = people['Sex'].astype(str)
+print(ww1.dtype)
+q1= product["ean"].astype(int)
+print(q1.dtype)
+# df["column_name"] = df["column_name"].astype("int32")
+
+
+# Name column se unique naam nikalna
+mypeople = people['Sex'].unique()[:5]
+print(mypeople)
+# use for howmany names are unique
+print(people['Sex'].nunique())
+# print(people.sample(n=2))
+
+ww2 = people.isnull().sum().to_dict()
+print(ww2)
