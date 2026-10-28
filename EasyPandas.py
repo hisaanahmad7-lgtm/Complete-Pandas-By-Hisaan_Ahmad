@@ -80,7 +80,7 @@ df = pd.DataFrame(data)
 print(df.groupby('Team')['Points'].mean().head(2))
 
 
-# Age column ke numbers ko text (string) mein badalna
+# Convert the 'Sex' column to string type and print its data type
 ww1 = people['Sex'].astype(str)
 print(ww1.dtype)
 q1= product["ean"].astype(int)
@@ -88,7 +88,7 @@ print(q1.dtype)
 # df["column_name"] = df["column_name"].astype("int32")
 
 
-# Name column se unique naam nikalna
+# unique name is poped from name columb
 mypeople = people['Sex'].unique()[:5]
 print(mypeople)
 # use for howmany names are unique
@@ -97,3 +97,15 @@ print(people['Sex'].nunique())
 
 ww2 = people.isnull().sum().to_dict()
 print(ww2)
+
+mydf = pd.DataFrame({"A": [1, 22, 30, 10]})   #VAr calculate the average of list of set of elements
+mycalc = mydf.var().to_dict()
+print("31.var():", mydf.var().to_dict())
+if mycalc['A']<12:
+    print("Control Average...")
+else:
+    print("Average Outline...")
+print("32.median():", mydf.median().to_dict())
+print("34.abs():", mydf.abs().head(1).to_dict())    #Convert all -ve numbers to +ve
+print("35.round():", mydf.round(2).head(1).to_dict())
+print("39.duplicated():", people.duplicated().sum())
