@@ -1,0 +1,19 @@
+# Python base image
+FROM python:3.11-slim
+
+# Set you Working Directory inside the container
+WORKDIR /app
+
+# System dependencies (Required packages for Pandas and Numpy)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Pandas here:
+RUN pip install --no-cache-dir pandas
+
+# Copy your Python script into the container
+COPY . /app
+
+# Default command (You can change the name of the script if needed)
+CMD ["python", "main.py"]
