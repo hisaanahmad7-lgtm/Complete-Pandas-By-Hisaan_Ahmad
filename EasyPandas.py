@@ -109,3 +109,21 @@ print("32.median():", mydf.median().to_dict())
 print("34.abs():", mydf.abs().head(1).to_dict())    #Convert all -ve numbers to +ve
 print("35.round():", mydf.round(2).head(1).to_dict())
 print("39.duplicated():", people.duplicated().sum())
+
+
+
+
+
+
+df_test = pd.DataFrame({
+    'A': [10, 20, 30],
+    'B': [40, 50, 60]
+})
+# col = 'A'
+# print(col)
+
+print(df_test.rename(columns={"A" : "My_A"}))
+print(df_test.map(lambda x: x + 5))
+print(df_test.where(df_test>=20))
+print(people.mask(df_test>20).head(3))
+print(df_test.T)   #Convert rows in column and Column in row...
